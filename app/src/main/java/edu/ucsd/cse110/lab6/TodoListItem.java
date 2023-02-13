@@ -23,7 +23,6 @@ public class TodoListItem {
         this.text = text;
         this.completed =completed;
         this.order = order;
-
     }
 
     public static List<TodoListItem> loadJSON(Context context, String path) {
