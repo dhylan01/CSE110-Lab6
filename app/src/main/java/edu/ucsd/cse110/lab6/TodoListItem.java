@@ -2,6 +2,10 @@ package edu.ucsd.cse110.lab6;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -13,15 +17,20 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
+@Entity(tableName = "todo_list_items")
 public class TodoListItem {
-    public long id = 0;
-    public long order = 0;
+
+    @PrimaryKey(autoGenerate = true)
+    public long id;
+
+    @NonNull
+    public long order;
     public String text;
     public boolean completed;
 
-    TodoListItem(String text, boolean completed, int order) {
+    TodoListItem(String text, boolean completed, long order) {
         this.text = text;
-        this.completed =completed;
+        this.completed = completed;
         this.order = order;
     }
 
