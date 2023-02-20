@@ -24,4 +24,7 @@ public interface TodoListItemDao {
 
     @Delete
     int delete(TodoListItem todoListItem);
+
+    @Insert
+    List<Long> insertAll(List<TodoListItem> todoListItem);
 }
