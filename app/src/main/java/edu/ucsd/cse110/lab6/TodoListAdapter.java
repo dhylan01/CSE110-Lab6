@@ -3,6 +3,7 @@ package edu.ucsd.cse110.lab6;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,11 +49,13 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
+        private final CheckBox checkBox;
         private TodoListItem todoItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.todo_item_text);
+            this.checkBox = itemView.findViewById(R.id.checkBox);
         }
 
         public TodoListItem getTodoItem() {
@@ -62,6 +65,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         public void setTodoItem(TodoListItem todoItem) {
             this.todoItem = todoItem;
             this.textView.setText(todoItem.text);
+            this.checkBox.setChecked(todoItem.completed);
         }
     }
 }
