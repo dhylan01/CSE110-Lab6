@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.lab6;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,6 +20,9 @@ public interface TodoListItemDao {
     @Query("SELECT * FROM `todo_list_items` ORDER BY `order`")
     List<TodoListItem> getAll();
 
+    @Query("SELECT * FROM `todo_list_items` ORDER BY `order`")
+    LiveData<List<TodoListItem>> getAllLive();
+
     @Update
     int update(TodoListItem todoListItem);
 
@@ -27,4 +31,7 @@ public interface TodoListItemDao {
 
     @Insert
     List<Long> insertAll(List<TodoListItem> todoListItem);
+
+    @Query("SELECT `order`+1 FROM `todo_list_items` ORDER BY `order` DESC LIMIT 1")
+    int getOrderForAppend();
 }

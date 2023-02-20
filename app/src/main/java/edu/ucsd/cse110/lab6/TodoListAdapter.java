@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
 
     private List<TodoListItem> todoItems = Collections.emptyList();
+    private Consumer<TodoListItem> onCheckBoxClicked;
+    private Consumer<TodoListItem> onDeleteClicked;
+    private BiConsumer<TodoListItem, String> onTextEditedHandler;
 
     @NonNull
     @Override
@@ -30,6 +35,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         this.todoItems.clear();
         this.todoItems = newTodoItems;
         notifyDataSetChanged();
+    }
+
+    public void setOnCheckBoxClickedHandler(Consumer<TodoListItem> onCheckBoxClicked) {
+        this.onCheckBoxClicked = onCheckBoxClicked;
+    }
+
+    public void setOnTextEditedHandler(BiConsumer<TodoListItem, String> onTextEdited) {
+        this.onTextEditedHandler = onTextEdited;
+    }
+
+    public void setOnDeleteHandler(Consumer<TodoListItem> onDelete) {
+        this.onDeleteClicked = onDelete;
     }
 
     @Override
@@ -51,11 +68,29 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         private final TextView textView;
         private final CheckBox checkBox;
         private TodoListItem todoItem;
+        private final TextView deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.todo_item_text);
             this.checkBox = itemView.findViewById(R.id.checkBox);
+            this.deleteButton = itemView.findViewById(R.id.textView);
+
+            this.checkBox.setOnClickListener(view -> {
+                if(onCheckBoxClicked == null) return;
+                onCheckBoxClicked.accept(todoItem);
+            });
+
+            this.deleteButton.setOnClickListener(view -> {
+                if(onDeleteClicked == null) return;
+                onDeleteClicked.accept(todoItem);
+            });
+
+            this.textView.setOnFocusChangeListener((view, hasFocus) -> {
+                if(!hasFocus) {
+                    onTextEditedHandler.accept(todoItem, textView.getText().toString());
+                }
+            });
         }
 
         public TodoListItem getTodoItem() {
